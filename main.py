@@ -656,49 +656,49 @@ class PlaceClient:
 
                     # get target color
                     # target_rgb = pix[current_r, current_c]
+                    with self._lock:
+                        # get current pixel position from input image and replacement color
+                        current_r, current_c, new_rgb = self.get_unset_pixel(
+                            current_r,
+                            current_c,
+                            index,
+                        )
 
-                    # get current pixel position from input image and replacement color
-                    current_r, current_c, new_rgb = self.get_unset_pixel(
-                        current_r,
-                        current_c,
-                        index,
-                    )
+                        # get converted color
+                        new_rgb_hex = ColorMapper.rgb_to_hex(new_rgb)
+                        pixel_color_index = ColorMapper.COLOR_MAP[new_rgb_hex]
 
-                    # get converted color
-                    new_rgb_hex = ColorMapper.rgb_to_hex(new_rgb)
-                    pixel_color_index = ColorMapper.COLOR_MAP[new_rgb_hex]
+                        logger.info("\nAccount Placing: ", name, "\n")
 
-                    logger.info("\nAccount Placing: ", name, "\n")
-
-                    # draw the pixel onto r/place
-                    # There's a better way to do this
-                    canvas = 0
-                    pixel_x_start = self.pixel_x_start + current_r
-                    pixel_y_start = self.pixel_y_start + current_c
-                    if self.raw_pixel_y_start >= 0 and -500 <= self.raw_pixel_x_start < 500:
-                        canvas = 4
-                    elif self.raw_pixel_y_start < 0 and -500 <= self.raw_pixel_x_start < 500:
-                        canvas = 1
-                    elif self.raw_pixel_y_start < 0 and self.raw_pixel_x_start >= 500:
-                        canvas = 2
-                    elif self.raw_pixel_y_start >= 0 and self.raw_pixel_x_start >= 500:
-                        canvas = 5
-                    elif self.raw_pixel_y_start >= 0 and self.raw_pixel_x_start < -500:
-                        canvas = 3
-                    elif self.raw_pixel_y_start < 0 and self.raw_pixel_x_start < -500:
+                        # draw the pixel onto r/place
+                        # There's a better way to do this
                         canvas = 0
+                        pixel_x_start = self.pixel_x_start + current_r
+                        pixel_y_start = self.pixel_y_start + current_c
+                        if self.raw_pixel_y_start >= 0 and -500 <= self.raw_pixel_x_start < 500:
+                            canvas = 4
+                        elif self.raw_pixel_y_start < 0 and -500 <= self.raw_pixel_x_start < 500:
+                            canvas = 1
+                        elif self.raw_pixel_y_start < 0 and self.raw_pixel_x_start >= 500:
+                            canvas = 2
+                        elif self.raw_pixel_y_start >= 0 and self.raw_pixel_x_start >= 500:
+                            canvas = 5
+                        elif self.raw_pixel_y_start >= 0 and self.raw_pixel_x_start < -500:
+                            canvas = 3
+                        elif self.raw_pixel_y_start < 0 and self.raw_pixel_x_start < -500:
+                            canvas = 0
 
 
-                    # draw the pixel onto r/place
-                    next_pixel_placement_time = self.set_pixel_and_check_ratelimit(
-                        self.access_tokens[index],
-                        pixel_x_start,
-                        pixel_y_start,
-                        name,
-                        pixel_color_index,
-                        canvas,
-                        index,
-                    )
+                        # draw the pixel onto r/place
+                        next_pixel_placement_time = self.set_pixel_and_check_ratelimit(
+                            self.access_tokens[index],
+                            pixel_x_start,
+                            pixel_y_start,
+                            name,
+                            pixel_color_index,
+                            canvas,
+                            index,
+                        )
 
                     current_r += 1
 
