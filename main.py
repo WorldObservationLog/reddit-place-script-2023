@@ -25,6 +25,7 @@ import src.utils as utils
 class PlaceClient:
     def __init__(self, config_path):
         self.logger = logger
+        self._lock = threading.Lock()
 
         # Data
         self.json_data = utils.get_json_data(self, config_path)
