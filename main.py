@@ -109,6 +109,10 @@ class PlaceClient:
             raw_y = y
         return raw_x, raw_y
 
+    def get_board_relative_coords(self, raw_x, raw_y):
+        return raw_x + 1500, raw_y + 1000
+
+
     def set_pixel_and_check_ratelimit(
         self,
         access_token_in,
@@ -425,10 +429,11 @@ class PlaceClient:
                 target_rgb, self.rgb_colors_array, self.legacy_transparency
             )
 
-            if pix2[x + self.pixel_x_start, y + self.pixel_y_start] != new_rgb:
+            board_x, board_y = self.get_board_relative_coords(self.raw_pixel_x_start, self.raw_pixel_y_start)
+            if pix2[x + board_x, y + board_y] != new_rgb:
                 logger.debug(
                     "{}, {}, {}, {}",
-                    pix2[x + self.pixel_x_start, y + self.pixel_y_start],
+                    pix2[x + board_x, y + board_y],
                     new_rgb,
                     new_rgb != (69, 42, 0),
                     pix2[x, y] != new_rgb,
@@ -451,6 +456,7 @@ class PlaceClient:
                         x + self.pixel_x_start,
                         y + self.pixel_y_start,
                     )
+            logger.info("Same color, skipping...")
             x += 1
             loopedOnce = True
         return x, y, new_rgb
