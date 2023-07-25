@@ -5,9 +5,6 @@
 [![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](https://forthebadge.com)
 
 # Thanks to everyone who contributed! r/place is now over!
-<a href="https://github.com/WorldObservationLog/reddit-place-script-2023/graphs/contributors">
-  <img src="https://contrib.rocks/WorldObservationLog/reddit-place-script-2023" />
-</a>
 
 ## About
 
